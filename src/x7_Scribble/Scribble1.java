@@ -1,6 +1,7 @@
 package x7_Scribble;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -25,6 +26,9 @@ private VBox vbox;
 private TextField textfeld;
 private ColorPicker farbauswahl;
 private Slider strichbreiteauswahl;
+
+private Rectangle panel = new Rectangle(600,400,Color.WHITESMOKE);
+
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -53,8 +57,9 @@ private Slider strichbreiteauswahl;
 		
 
 		// Zeichenfläche erstellen
-		Rectangle panel = new Rectangle(600,400,Color.WHITESMOKE);
+
 		malGruppe.getChildren().addAll(panel);
+		
 
 		
 		//alles auf der BorderPane platzieren
@@ -67,6 +72,8 @@ private Slider strichbreiteauswahl;
 		panel.setOnMouseDragged(new DragPainter());
 		panel.setOnMouseReleased(new LineEnder());	
 		
+		okKnopf.setOnAction(new Loeschen());
+		
 		primaryStage.show();
 
 	}
@@ -76,11 +83,20 @@ private Slider strichbreiteauswahl;
 	
 	private double x,y,lastX,lastY;	
 	
+	private class Loeschen implements EventHandler<ActionEvent>{
+		public void handle (ActionEvent event) {
+			malGruppe.getChildren().clear();
+			malGruppe.getChildren().add(panel);
+			
+		}
+	}
+	
+	
 	private class LineStarter implements EventHandler<MouseEvent>{
 		public void handle(MouseEvent event) {
 			x=event.getX(); 
 			y=event.getY();
-			malGruppe.getChildren().add(new Circle(x,y,3,Color.RED));
+			//malGruppe.getChildren().add(new Circle(x,y,3,farbauswahl.getValue()));
 		}
 	}
 	
@@ -107,7 +123,8 @@ private Slider strichbreiteauswahl;
 	
 	private class LineEnder implements EventHandler<MouseEvent>{
 		public void handle(MouseEvent event) {
-			malGruppe.getChildren().add(new Circle(lastX,lastY,3,Color.GREEN));
+			//Linie 
+			//malGruppe.getChildren().add(new Circle(lastX,lastY,3,farbauswahl.getValue()));
 		}
 	}
 	
