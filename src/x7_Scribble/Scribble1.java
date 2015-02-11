@@ -10,9 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -86,11 +84,7 @@ private double x,y,lastX,lastY;
 		primaryStage.show();
 
 	}
-	
-	
-	
-
-	
+		
 	private class Loeschen implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent event) {
 			malGruppe.getChildren().clear();
@@ -98,7 +92,6 @@ private double x,y,lastX,lastY;
 			
 		}
 	}
-	
 	
 	private class LineStarter implements EventHandler<MouseEvent>{
 		public void handle(MouseEvent event) {
@@ -112,8 +105,7 @@ private double x,y,lastX,lastY;
 		public void handle(MouseEvent event) {
 			
 			// zeichnen auﬂerhalb der Zeichenfl‰che verhindern
-			double Xmax = panel.getWidth();
-			double Ymax = panel.getHeight();
+
 			if (event.getX() <= strichbreiteauswahl.getValue() || 
 				event.getY() <= strichbreiteauswahl.getValue() ||
 				event.getX() >= (panel.getWidth() - strichbreiteauswahl.getValue() ) || 
@@ -125,7 +117,7 @@ private double x,y,lastX,lastY;
 			lastY=y;
 			x=event.getX(); 
 			y=event.getY();		
-			Line line = new Line(x,y,lastX,lastY);
+			final Line line = new Line(x,y,lastX,lastY);
 			
 			// Strichbreite auslesen
 			line.setStrokeWidth(strichbreiteauswahl.getValue());
