@@ -3,13 +3,16 @@ package x7_Scribble;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -34,11 +37,11 @@ private double x,y,lastX,lastY;
 	public void start(Stage primaryStage) {
 		root = new BorderPane();
 		malGruppe = new Group();
-		vbox = new VBox();
+		vbox = new VBox(50);
 		farbauswahl = new ColorPicker();
 		strichbreiteauswahl = new Slider(1,50,10);
 		Button ruecksetzKnopf = new Button("Rücksetzen");
-		
+
 		// Fenster erzeugen und Eigenschaften festlegen
 		Scene scene = new Scene (root);
 		primaryStage.setScene(scene);
@@ -51,14 +54,20 @@ private double x,y,lastX,lastY;
 		farbauswahl.setValue(Color.BLACK);				//Strichfarbe festlegen
 		
 		
+		
 		// Vbox erstellen
 		vbox.getChildren().addAll(farbauswahl,strichbreiteauswahl,ruecksetzKnopf);
 		vbox.prefWidth(50);		// bevorzugte Breite
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setSpacing(50);
+	    vbox.setStyle("-fx-border-width: 1;" + "-fx-border-color: black");
+	    
 		
 
 		// Zeichenfläche erstellen
 		panel = new Rectangle(600,400,Color.WHITESMOKE);
 		malGruppe.getChildren().addAll(panel);
+		malGruppe.setAutoSizeChildren(false);
 		
 
 		
@@ -95,7 +104,6 @@ private double x,y,lastX,lastY;
 		public void handle(MouseEvent event) {
 				x=event.getX(); 
 				y=event.getY();			
-			//malGruppe.getChildren().add(new Circle(x,y,3,farbauswahl.getValue()));
 		}
 	}
 	
@@ -104,10 +112,14 @@ private double x,y,lastX,lastY;
 		public void handle(MouseEvent event) {
 			
 			// zeichnen außerhalb der Zeichenfläche verhindern
-			if (event.getX() <= (panel.getLayoutX()+strichbreiteauswahl.getValue()) || 
-					event.getY() <= (panel.getLayoutY())+strichbreiteauswahl.getValue()) {
+			double Xmax = panel.getWidth();
+			double Ymax = panel.getHeight();
+			if (event.getX() <= strichbreiteauswahl.getValue() || 
+				event.getY() <= strichbreiteauswahl.getValue() ||
+				event.getX() >= (panel.getWidth() - strichbreiteauswahl.getValue() ) || 
+				event.getY() >= (panel.getHeight() - strichbreiteauswahl.getValue())) {
 				return;
-	
+				
 			}
 			lastX=x;
 			lastY=y;
